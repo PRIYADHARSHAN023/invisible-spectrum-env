@@ -3,13 +3,13 @@ description: Behavioral pattern recognition environment for subtle cognitive pat
 version: 0.1
 
 actions:
-  - action_type: string
-  - value: string
+  action_type: string
+  value: string
 
 observations:
-  - response_time: float
-  - attention_score: float
-  - consistency_score: float
+  response_time: float
+  attention_score: float
+  consistency_score: float
 
 reward:
   type: float
