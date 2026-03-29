@@ -1,3 +1,11 @@
+---
+title: Invisible Spectrum Env
+emoji: 🧠
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+pinned: false
+---
 # 🧠 Invisible Spectrum Environment (ISE)
 
 <div align="center">

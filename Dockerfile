@@ -7,5 +7,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Run inference as the default command
-CMD ["python", "inference.py"]
+# Run inference and then keep alive with dummy server
+CMD ["sh", "-c", "python inference.py; echo 'Evaluation Complete. Keeping Space Alive...'; python -m http.server 7860"]
