@@ -115,15 +115,14 @@ class ISE:
                base_rt += random.uniform(-0.1, 0.2)
 
         # Apply general noise (clipping back to 0-1 ranges)
-        response_time = max(0.0, min(1.0, base_rt + random.uniform(-noise_factor, noise_factor)))
-        attention = max(0.0, min(1.0, base_att + random.uniform(-noise_factor, noise_factor)))
-        consistency = max(0.0, min(1.0, base_cons + random.uniform(-noise_factor, noise_factor)))
+        noise_rt = random.uniform(-noise_factor, noise_factor)
+        noise_att = random.uniform(-noise_factor, noise_factor)
+        noise_cons = random.uniform(-noise_factor, noise_factor)
         
         return Observation(
-            response_time=response_time,
-            attention=attention,
-            consistency=consistency,
-            difficulty=self.difficulty_level
+            response_time=round(max(0.0, min(1.0, base_rt + noise_rt)), 3),
+            attention_score=round(max(0.0, min(1.0, base_att + noise_att)), 3),
+            consistency_score=round(max(0.0, min(1.0, base_cons + noise_cons)), 3)
         )
 
     def step(self, action: Action) -> Tuple[Observation, float, bool, Dict[str, Any]]:

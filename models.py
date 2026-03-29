@@ -7,9 +7,8 @@ class Action(BaseModel):
 
 class Observation(BaseModel):
     response_time: float
-    attention: float
-    consistency: float
-    difficulty: float
+    attention_score: float
+    consistency_score: float
     
 class State(BaseModel):
     ground_truth_profile: Literal["normal", "adhd", "masked"]

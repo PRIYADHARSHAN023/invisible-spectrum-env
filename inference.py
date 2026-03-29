@@ -10,27 +10,23 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "dummy-key-for-local")
 
 def heuristic_agent_step(obs, current_step) -> Action:
     """
-    An adaptive heuristic agent that classifies when confident, showing dynamic step counts!
+    Dummy heuristic that uses fixed confidence thresholds and random probes.
     """
-    # Ask minimal questions to gather data. 
-    if current_step < 2:
-        return Action(action_type="ask_easy")
-        
     # Confident Normal Profile (Stable under pressure)
-    if obs.attention > 0.75 and obs.consistency > 0.75:
+    if obs.attention_score > 0.75 and obs.consistency_score > 0.75:
         # If it's been asked at least 6 questions and holds up, it's definitely normal
         if current_step >= 6:
             return Action(action_type="classify", value="normal")
         # In Easy/Medium, we might be confident earlier if stats are extremely high
-        if obs.attention > 0.85 and obs.consistency > 0.85 and obs.difficulty < 0.8:
+        if obs.attention_score > 0.85 and obs.consistency_score > 0.85:
              return Action(action_type="classify", value="normal")
              
     # Confident ADHD Profile (Chaotic from the start)
-    if obs.attention < 0.55 and obs.consistency < 0.55:
+    if obs.attention_score < 0.55 and obs.consistency_score < 0.55:
         return Action(action_type="classify", value="adhd")
         
     # Masked Profile (If it holds up initially, but starts dropping moderately after a few questions)
-    if current_step >= 5 and (obs.attention < 0.72 or obs.consistency < 0.72):
+    if current_step >= 5 and (obs.attention_score < 0.72 or obs.consistency_score < 0.72):
         return Action(action_type="classify", value="masked")
         
     # Provide pressure or gather more info if unsure using randomness
