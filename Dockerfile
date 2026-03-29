@@ -7,5 +7,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Run inference and then keep alive with dummy server
-CMD ["sh", "-c", "python inference.py; echo 'Evaluation Complete. Keeping Space Alive...'; python -m http.server 7860"]
+# Expose port and run the FastAPI server
+EXPOSE 7860
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
