@@ -3,7 +3,8 @@ FROM python:3.10-slim
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PORT=7860
+    PORT=7860 \
+    PATH="/home/user/.local/bin:$PATH"
 
 # Setup a non-root user 'user' with UID 1000
 RUN useradd -m -u 1000 user
