@@ -7,11 +7,13 @@ app = FastAPI()
 current_env = None
 
 print("--- Invisible Spectrum Environment API Initializing ---")
-print(f"Loading tasks and environment...")
 
 @app.on_event("startup")
 async def startup_event():
     print("FastAPI Application Startup Complete on Port 7860")
+
+@app.post("/reset")
+async def reset(request: Request):
     global current_env
     try:
         body = await request.json()
