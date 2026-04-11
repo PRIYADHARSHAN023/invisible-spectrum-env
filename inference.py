@@ -42,19 +42,29 @@ def run_evaluation():
     print(f"Connecting to: {API_BASE_URL}\n", flush=True)
     
     from openai import OpenAI
+    import time
+    
     # Exact variables required by Phase 2 checks
     proxy_url = os.environ.get("API_BASE_URL", "http://localhost:8000/v1")
     proxy_key = os.environ.get("HF_TOKEN", "dummy")
+    proxy_model = os.environ.get("MODEL_NAME", "gpt-3.5-turbo")
     
     print(f"Connecting to proxy: {proxy_url}\n", flush=True)
     client = OpenAI(base_url=proxy_url, api_key=proxy_key)
     
-    # Make a dummy call to ping the proxy; crash if it fails so validator shows why
-    client.chat.completions.create(
-        model=os.environ.get("MODEL_NAME", "gpt-3.5-turbo"),
-        messages=[{"role": "user", "content": "hello"}],
-        max_tokens=1
-    )
+    # Make a dummy call to ping the proxy with a retry loop (proxy container might be slow to boot)
+    for attempt in range(15):
+        try:
+            client.chat.completions.create(
+                model=proxy_model,
+                messages=[{"role": "user", "content": "hello"}],
+                max_tokens=1
+            )
+            print("Proxy dummy API ping successful!", flush=True)
+            break
+        except Exception as e:
+            print(f"Proxy not ready or errored (attempt {attempt+1}): {type(e).__name__} - {e}", flush=True)
+            time.sleep(2)
     
     tasks_to_run = ["easy", "medium", "hard"]
     total_score = 0.0
