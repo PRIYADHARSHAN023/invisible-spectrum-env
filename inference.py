@@ -38,43 +38,37 @@ def heuristic_agent_step(obs, current_step) -> Action:
     return Action(action_type="classify", value="masked")
 
 def run_evaluation():
-    print(f"--- Running Inference with {MODEL_NAME} ---")
-    print(f"Connecting to: {API_BASE_URL}\n")
+    print(f"--- Running Inference with {MODEL_NAME} ---", flush=True)
+    print(f"Connecting to: {API_BASE_URL}\n", flush=True)
     
     tasks_to_run = ["easy", "medium", "hard"]
     total_score = 0.0
     
     for task_name in tasks_to_run:
-        print(f"Evaluating Task: {task_name.upper()}")
+        print(f"Evaluating Task: {task_name.upper()}", flush=True)
+        print(f"[START] task={task_name}", flush=True)
+        
         env = get_task(task_name)
+        obs = env.reset()
+        done = False
         
-        # Test 5 episodes per task
-        task_score = 0.0
-        num_episodes = 5
+        while not done:
+            action = heuristic_agent_step(obs, env.steps)
+            obs, reward, done, info = env.step(action)
+            print(f"[STEP] step={env.steps} reward={reward}", flush=True)
+            
+        state = env.state()
+        is_correct = (info.get("reason") == "correct_classification")
+        avg_score = Grader.calculate_score(is_correct, state.steps_taken, env.max_steps)
         
-        for ep in range(num_episodes):
-            obs = env.reset()
-            done = False
-            
-            while not done:
-                action = heuristic_agent_step(obs, env.steps)
-                obs, reward, done, info = env.step(action)
-                
-            state = env.state()
-            is_correct = (info.get("reason") == "correct_classification")
-            ep_score = Grader.calculate_score(is_correct, state.steps_taken, env.max_steps)
-            task_score += ep_score
-            
-            print(f"  Ep {ep+1} | Truth: {state.ground_truth_profile:6} | Agents steps: {state.steps_taken:2} | Correct: {is_correct} | Score: {ep_score:.2f}")
-            
-        avg_task_score = task_score / num_episodes
-        print(f"-> Average Score for {task_name.upper()}: {avg_task_score:.2f}\n")
-        total_score += avg_task_score
+        print(f"[END] task={task_name} score={avg_score:.2f} steps={state.steps_taken}", flush=True)
+        print(f"-> Score for {task_name.upper()}: {avg_score:.2f}\n", flush=True)
+        total_score += avg_score
         
     final_score = total_score / len(tasks_to_run)
-    print(f"=====================================")
-    print(f"FINAL SUBMISSION SCORE: {final_score:.3f}")
-    print(f"=====================================")
+    print(f"=====================================", flush=True)
+    print(f"FINAL SUBMISSION SCORE: {final_score:.3f}", flush=True)
+    print(f"=====================================", flush=True)
 
 if __name__ == "__main__":
     run_evaluation()
