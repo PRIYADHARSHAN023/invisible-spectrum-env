@@ -1,14 +1,17 @@
 [project]
 name = "invisible-spectrum-env"
 version = "0.1.0"
-description = "Invisible Spectrum Environment for behavioral pattern detection"
+description = "Invisible Spectrum Environment"
 authors = [
-    {name = "A. Priyadharshan"}
+    { name="A. Priyadharshan" }
 ]
 dependencies = [
+    "fastapi",
+    "uvicorn",
     "pydantic",
     "numpy"
 ]
 
-[tool.openenv]
-env_module = "ise_env"
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
