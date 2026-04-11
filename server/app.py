@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI
 from ise_env import InvisibleSpectrumEnv
 
@@ -14,3 +15,9 @@ def reset():
 def step(action: dict):
     result = env.step(action)
     return result
+
+def main():
+    uvicorn.run("server.app:app", host="0.0.0.0", port=8000)
+
+if __name__ == '__main__':
+    main()
