@@ -1,16 +1,19 @@
 [project]
 name = "invisible-spectrum-env"
 version = "0.1.0"
-description = "Invisible Spectrum Environment"
-authors = [
-    { name="A. Priyadharshan" }
-]
+description = "Invisible Spectrum Environment for behavioral pattern detection"
+authors = [{name = "A Priyadharshan"}]
+
 dependencies = [
     "fastapi",
     "uvicorn",
     "pydantic",
-    "numpy"
+    "numpy",
+    "openenv-core>=0.2.0"
 ]
+
+[project.scripts]
+server = "server.app:app"
 
 [build-system]
 requires = ["setuptools"]
