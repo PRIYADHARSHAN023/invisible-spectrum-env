@@ -1,0 +1,14 @@
+[project]
+name = "invisible-spectrum-env"
+version = "0.1.0"
+description = "Invisible Spectrum Environment for behavioral pattern detection"
+authors = [
+    {name = "A. Priyadharshan"}
+]
+dependencies = [
+    "pydantic",
+    "numpy"
+]
+
+[tool.openenv]
+env_module = "ise_env"
