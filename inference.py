@@ -44,7 +44,7 @@ def run_evaluation():
     from openai import OpenAI
     # Exact variables required by Phase 2 checks
     proxy_url = os.environ.get("API_BASE_URL", "http://localhost:8000/v1")
-    proxy_key = os.environ.get("API_KEY", "dummy")
+    proxy_key = os.environ.get("HF_TOKEN", "dummy")
     
     print(f"Connecting to proxy: {proxy_url}\n", flush=True)
     client = OpenAI(base_url=proxy_url, api_key=proxy_key)
